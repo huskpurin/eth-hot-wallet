@@ -6,7 +6,8 @@
   "author": "Abu Kuo",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "web3": "0.20.6"
   },
   "scripts": {
     "start": "node src/index.js",
