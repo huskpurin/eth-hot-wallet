@@ -5,15 +5,11 @@ function web3Middleware(req, res, next) {
   if(web3 && web3.isConnected()) {
     next();
   } else {
-    res.status(500).json({
-      data: null,
-      statusCode: 500,
-      message: 'Web3 provider have not been set.',
-    });
+    next(new Error('Web3 Provider is not Connected'));
   }
 }
 
-router.get('/node', web3Middleware, (req, res) => {
+router.get('/node', web3Middleware, (req, res, next) => {
   web3.admin.nodeInfo((error, result) => {
     if (!error){
       res.status(200).json({
@@ -21,20 +17,14 @@ router.get('/node', web3Middleware, (req, res) => {
           enode: result.enode,
           name: result.name,
         },
-        statusCode: 200,
-        message: 'success',
       });
     } else {
-      res.status(500).json({
-        error,
-        statusCode: 500,
-        message: 'something wrong',
-      });
+      next(error);
     }
   });
 });
 
-router.get('/block/:blockNumber', web3Middleware, (req, res) => {
+router.get('/block/:blockNumber', web3Middleware, (req, res, next) => {
   const { blockNumber } = req.params;
 
   if (blockNumber) {
@@ -42,15 +32,9 @@ router.get('/block/:blockNumber', web3Middleware, (req, res) => {
       if (!error) {
         res.status(200).json({
           data: result,
-          statusCode: 200,
-          message: 'success',
         });
       } else {
-        res.status(500).json({
-          error,
-          statusCode: 500,
-          message: 'something wrong',
-        });
+        next(error);
       }
     })
   }

@@ -6,6 +6,7 @@
   "author": "Abu Kuo",
   "license": "MIT",
   "dependencies": {
+    "errorhandler": "^1.5.0",
     "express": "^4.16.3",
     "web3": "0.20.6"
   },
