@@ -1,10 +1,5 @@
-var HTTP_PROVIDER = 'http://localhost:8545';
 var router = require('express').Router();
-var axios = require('axios').default;
-
-var Web3 = require('web3');
-var web3 = new Web3();
-web3.setProvider(new web3.providers.HttpProvider(HTTP_PROVIDER));
+var web3 = require('./utils/web3');
 
 function web3Middleware(req, res, next) {
   if(web3 && web3.isConnected()) {
@@ -19,34 +14,23 @@ function web3Middleware(req, res, next) {
 }
 
 router.get('/node', web3Middleware, (req, res) => {
-  axios({
-    url: HTTP_PROVIDER,
-    method: 'post',
-    headers: {
-      'content-type': 'application/json',
-    },
-    data: {
-      jsonrpc: '2.0',
-      method: 'admin_nodeInfo',
-      id: 0,
-    },
-  })
-  .then(json => {
-    res.status(200).json({
-      data: {
-        enode: json.data.result.enode,
-        name: json.data.result.name,
-      },
-      statusCode: 200,
-      message: 'success',
-    });
-  })
-  .catch(error => {
-    res.status(500).json({
-      error,
-      statusCode: 500,
-      message: 'something wrong',
-    });
+  web3.admin.nodeInfo((error, result) => {
+    if (!error){
+      res.status(200).json({
+        data: {
+          enode: result.enode,
+          name: result.name,
+        },
+        statusCode: 200,
+        message: 'success',
+      });
+    } else {
+      res.status(500).json({
+        error,
+        statusCode: 500,
+        message: 'something wrong',
+      });
+    }
   });
 });
 
