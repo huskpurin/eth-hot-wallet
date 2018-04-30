@@ -10,17 +10,13 @@ function web3Middleware(req, res, next) {
 }
 
 v1Router.get('/node', web3Middleware, (req, res, next) => {
-  web3.admin.nodeInfo((error, result) => {
-    if (!error){
-      res.status(200).json({
-        data: {
-          enode: result.enode,
-          name: result.name,
-        },
-      });
-    } else {
-      next(error);
-    }
+  var result = web3.admin.nodeInfo;
+
+  res.status(200).json({
+    data: {
+      enode: result.enode,
+      name: result.name,
+    },
   });
 });
 
@@ -55,4 +51,27 @@ v1Router.get('/transaction/:transationHash', web3Middleware, (req, res, next) =>
     })
   }
 });
+
+v1Router
+  .route('/miner')
+  .all(web3Middleware)
+  .put((req, res, next) => {
+    web3.miner.start(1, (error, result) => {
+      if (!error) {
+        res.status(204);
+      } else {
+        next(error);
+      }
+    })
+  })
+  .delete((req, res, next) => {
+    web3.miner.end((error, result) => {
+      if (!error) {
+        res.status(204);
+      } else {
+        next(error);
+      }
+    })
+  });
+
 module.exports = v1Router;
