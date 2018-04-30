@@ -40,4 +40,19 @@ v1Router.get('/block/:blockNumber', web3Middleware, (req, res, next) => {
   }
 });
 
+v1Router.get('/transaction/:transationHash', web3Middleware, (req, res, next) => {
+  const { transationHash } = req.params;
+
+  if (transationHash) {
+    web3.eth.getTransaction(transationHash, (error, result) => {
+      if (!error) {
+        res.status(200).json({
+          data: result,
+        });
+      } else {
+        next(error);
+      }
+    })
+  }
+});
 module.exports = v1Router;
