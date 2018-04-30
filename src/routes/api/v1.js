@@ -1,5 +1,5 @@
-var router = require('express').Router();
-var web3 = require('./utils/web3');
+var v1Router = require('express').Router();
+var web3 = require('../../utils/web3');
 
 function web3Middleware(req, res, next) {
   if(web3 && web3.isConnected()) {
@@ -9,7 +9,7 @@ function web3Middleware(req, res, next) {
   }
 }
 
-router.get('/node', web3Middleware, (req, res, next) => {
+v1Router.get('/node', web3Middleware, (req, res, next) => {
   web3.admin.nodeInfo((error, result) => {
     if (!error){
       res.status(200).json({
@@ -24,7 +24,7 @@ router.get('/node', web3Middleware, (req, res, next) => {
   });
 });
 
-router.get('/block/:blockNumber', web3Middleware, (req, res, next) => {
+v1Router.get('/block/:blockNumber', web3Middleware, (req, res, next) => {
   const { blockNumber } = req.params;
 
   if (blockNumber) {
@@ -40,4 +40,4 @@ router.get('/block/:blockNumber', web3Middleware, (req, res, next) => {
   }
 });
 
-module.exports = router;
+module.exports = v1Router;
