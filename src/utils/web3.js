@@ -1,7 +1,14 @@
-var HTTP_PROVIDER = 'http://localhost:8545';
+var config = require('../config');
 var Web3 = require('web3');
 var web3 = new Web3();
-web3.setProvider(new web3.providers.HttpProvider(HTTP_PROVIDER));
+var provider = new web3.providers.HttpProvider(
+  config.get('httpProvider'),
+  0,
+  config.get('httpProviderUser'),
+  config.get('httpProviderPassword')
+);
+
+web3.setProvider(provider);
 
 web3._extend({
   property: 'admin',
