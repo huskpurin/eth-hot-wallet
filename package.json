@@ -5,6 +5,14 @@
   "main": "index.js",
   "author": "Abu Kuo",
   "license": "MIT",
+  "scripts": {
+    "start": "node src/index.js",
+    "start:dev": "nodemon --watch src src/index.js",
+    "start:prod": "NODE_ENV=production node src/index.js"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
   "dependencies": {
     "body-parser": "^1.18.2",
     "convict": "^4.2.0",
@@ -15,11 +23,6 @@
     "express-validator": "^5.1.2",
     "lodash.pick": "^4.4.0",
     "web3": "0.20.6"
-  },
-  "scripts": {
-    "start": "node src/index.js",
-    "start:dev": "nodemon --watch src src/index.js",
-    "start:prod": "NODE_ENV=production node src/index.js"
   },
   "devDependencies": {
     "nodemon": "^1.17.3"

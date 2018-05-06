@@ -7,6 +7,12 @@ const config = convict({
     default: 'development',
     env: 'NODE_ENV',
   },
+  port: {
+    doc: 'The port to bind',
+    format: 'port',
+    default: 3000,
+    env: 'PORT',
+  },
   httpProvider: {
     doc: 'The geth client which is used to send rpc calls over http',
     format: 'url',

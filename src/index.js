@@ -1,9 +1,11 @@
 const express = require('express');
 const errorhandler = require('errorhandler');
 const bodyParser = require('body-parser');
-const app = express();
+const config = require('./config');
 const routes = require('./routes/index');
 
+const app = express();
+const port = config.get('port');
 const isProduction = process.env.NODE_ENV === 'production';
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -25,7 +27,7 @@ app.use((req, res, next) => {
 // development error handler
 // will print stacktrace
 if (!isProduction) {
-  app.use(function(err, req, res, next) {
+  app.use((err, req, res, next) => {
     console.log(err.stack);
 
     res.status(err.status || 500);
@@ -41,7 +43,7 @@ if (!isProduction) {
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.json({
     errors: {
@@ -51,4 +53,10 @@ app.use(function(err, req, res, next) {
   });
 });
 
-app.listen(3000, () => console.log('Example app listening on port 3000!'));
+app.listen(port, err => {
+  if (err) {
+    console.error(err);
+  }
+
+  console.info(`----\n==> App is running on port ${port}`);
+});
