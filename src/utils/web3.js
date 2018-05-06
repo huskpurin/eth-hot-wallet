@@ -36,4 +36,15 @@ web3._extend({
   ],
 });
 
+web3._extend({
+  property: 'personal',
+  methods: [
+    new web3._extend.Method({
+      name: 'sendTransaction',
+      call: 'personal_sendTransaction',
+      params: 2,
+    }),
+  ],
+});
+
 module.exports = web3;

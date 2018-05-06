@@ -1,9 +1,13 @@
 const express = require('express');
 const errorhandler = require('errorhandler');
+const bodyParser = require('body-parser');
 const app = express();
 const routes = require('./routes/index');
 
 const isProduction = process.env.NODE_ENV === 'production';
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 if (!isProduction) {
   app.use(errorhandler());
