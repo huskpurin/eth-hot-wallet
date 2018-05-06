@@ -29,7 +29,7 @@ web3._extend({
       params: 1,
     }),
     new web3._extend.Method({
-      name: 'end',
+      name: 'stop',
       call: 'miner_stop',
       params: 0,
     }),
